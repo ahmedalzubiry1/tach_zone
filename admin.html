@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم الأدمن | تيك زون</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard-responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -562,7 +563,7 @@
                         <i class="fas fa-plus"></i> إضافة منتج
                     </button>
                 </div>
-                <table class="data-table" id="productsTable">
+                <div class="dashboard-scroll-x"><table class="data-table" id="productsTable">
                     <thead>
                         <tr>
                             <th>الصورة</th>
@@ -575,7 +576,7 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
+                </table></div>
             </section>
 
             <section id="ordersSection" class="content-section" style="display: none;">
@@ -585,7 +586,7 @@
                         <i class="fas fa-file-pdf"></i> تصدير PDF
                     </button>
                 </div>
-                <table class="data-table" id="ordersTable">
+                <div class="dashboard-scroll-x"><table class="data-table" id="ordersTable">
                     <thead>
                         <tr>
                             <th>رقم الطلب</th>
@@ -597,12 +598,12 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
+                </table></div>
             </section>
 
             <section id="customSection" class="content-section" style="display: none;">
                 <div class="section-header"><h2>طلبات التصميم المخصصة</h2></div>
-                <table class="data-table" id="customTable">
+                <div class="dashboard-scroll-x"><table class="data-table" id="customTable">
                     <thead>
                         <tr>
                             <th>الرقم</th>
@@ -614,12 +615,12 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
+                </table></div>
             </section>
 
             <section id="customersSection" class="content-section" style="display: none;">
                 <div class="section-header"><h2>إدارة العملاء</h2></div>
-                <table class="data-table" id="customersTable">
+                <div class="dashboard-scroll-x"><table class="data-table" id="customersTable">
                     <thead>
                         <tr>
                             <th>الاسم</th>
@@ -631,7 +632,7 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
+                </table></div>
             </section>
 
             <section id="commissionsSection" class="content-section" style="display: none;">
@@ -659,7 +660,7 @@
                 </div>
                 
                 <h3 style="margin: 20px 0 15px; color: var(--primary);"><i class="fas fa-store"></i> قائمة التجار وفواتيرهم</h3>
-                <table class="data-table" id="vendorsTable">
+                <div class="dashboard-scroll-x"><table class="data-table" id="vendorsTable">
                     <thead>
                         <tr>
                             <th>التاجر</th>
@@ -671,7 +672,7 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
+                </table></div>
             </section>
 
             <section id="reportsSection" class="content-section" style="display: none;">
@@ -1795,7 +1796,7 @@
                 </div>
                 <div style="background: var(--bg); padding: 20px; border-radius: 12px;">
                     <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-shopping-bag"></i> الطلبات (${totalOrders})</h4>
-                    <table class="data-table" style="margin-top: 15px;">
+                    <div class="dashboard-scroll-x"><table class="data-table" style="margin-top: 15px;">
                         <thead>
                             <tr><th>رقم الطلب</th><th>التاريخ</th><th>المبلغ</th><th>الحالة</th></tr>
                         </thead>
@@ -1809,7 +1810,7 @@
                                 </tr>
                             `).join('') || '<tr><td colspan="4" style="text-align: center;">لا توجد طلبات</td></tr>'}
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
             `;
             
@@ -1957,5 +1958,6 @@
 
     </script>
     <script src="reports.js"></script>
+    <script src="dashboard-responsive.js"></script>
 </body>
 </html>

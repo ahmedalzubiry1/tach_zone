@@ -1,0 +1,220 @@
+/* =========================================================
+   Dashboard Responsive System - Admin & Vendor
+   Mobile-first dashboard shell without changing business logic
+   ========================================================= */
+html, body { max-width:100%; overflow-x:hidden; }
+body { min-width:0; }
+
+.admin-topbar, .vendor-topbar {
+    min-height:64px;
+    gap:12px;
+    flex-wrap:nowrap;
+}
+.admin-topbar .logo, .vendor-topbar .logo { min-width:0; overflow:hidden; }
+.admin-topbar .logo span, .vendor-topbar .logo span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.topbar-actions { flex-shrink:0; }
+
+.dashboard-mobile-menu {
+    display:none;
+    width:44px;
+    height:44px;
+    flex:0 0 44px;
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:12px;
+    background:rgba(255,255,255,.16);
+    color:#fff;
+    font-size:1.15rem;
+    cursor:pointer;
+}
+.dashboard-sidebar-overlay {
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:1990;
+    background:rgba(15,23,42,.58);
+    backdrop-filter:blur(2px);
+}
+.dashboard-sidebar-overlay.active { display:block; }
+
+.dashboard-scroll-x {
+    width:100%;
+    max-width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+}
+.data-table { min-width:680px; }
+.data-table th, .data-table td { white-space:nowrap; }
+
+@media (min-width:769px) {
+    .admin-dashboard .sidebar, .vendor-dashboard .sidebar { overflow-y:auto; }
+    .admin-dashboard .main-content, .vendor-dashboard .main-content { min-width:0; }
+}
+
+@media (max-width:768px) {
+    body { padding-bottom:env(safe-area-inset-bottom); }
+
+    .admin-topbar, .vendor-topbar {
+        position:sticky;
+        top:0;
+        z-index:2100;
+        min-height:60px;
+        padding:8px 10px;
+    }
+    .dashboard-mobile-menu { display:inline-grid; place-items:center; }
+    .admin-topbar .logo, .vendor-topbar .logo { font-size:1rem; gap:7px; flex:1 1 auto; justify-content:flex-start; }
+    .admin-topbar .logo i, .vendor-topbar .logo i { font-size:1.35rem !important; }
+    .admin-topbar .topbar-actions, .vendor-topbar .topbar-actions { gap:5px; }
+    .admin-topbar .topbar-actions .topbar-btn, .vendor-topbar .topbar-actions .topbar-btn {
+        width:42px;
+        height:42px;
+        padding:0;
+        justify-content:center;
+        font-size:0;
+    }
+    .admin-topbar .topbar-actions .topbar-btn i, .vendor-topbar .topbar-actions .topbar-btn i { font-size:1rem; margin:0; }
+
+    .admin-dashboard .sidebar, .vendor-dashboard .sidebar {
+        position:fixed;
+        top:0;
+        right:0;
+        left:auto;
+        width:min(86vw,340px);
+        max-width:340px;
+        height:100dvh;
+        max-height:100dvh;
+        z-index:2000;
+        margin:0;
+        padding:calc(14px + env(safe-area-inset-top)) 12px calc(18px + env(safe-area-inset-bottom));
+        transform:translateX(105%);
+        transition:transform .28s cubic-bezier(.4,0,.2,1);
+        overflow-y:auto;
+        overscroll-behavior:contain;
+        box-shadow:-18px 0 50px rgba(0,0,0,.25);
+    }
+    .admin-dashboard .sidebar.mobile-open, .vendor-dashboard .sidebar.mobile-open { transform:translateX(0); }
+    .admin-dashboard .sidebar-header, .vendor-dashboard .sidebar-header { padding:12px 0 16px; margin-bottom:10px; }
+    .admin-dashboard .sidebar-header i, .vendor-dashboard .sidebar-header i { font-size:2.2rem !important; }
+    .admin-dashboard .sidebar-header h3, .vendor-dashboard .sidebar-header h3 { font-size:1.15rem; margin-top:5px; }
+    .admin-dashboard .sidebar-header p, .vendor-dashboard .sidebar-header p { font-size:.78rem !important; }
+    .admin-dashboard .nav-item, .vendor-dashboard .nav-item {
+        min-height:50px;
+        padding:11px 14px;
+        margin:4px 0;
+        border-radius:13px;
+        font-size:.92rem;
+    }
+    .admin-dashboard .nav-item i, .vendor-dashboard .nav-item i { width:22px; text-align:center; }
+
+    .admin-dashboard .main-content, .vendor-dashboard .main-content {
+        margin:0 !important;
+        padding:14px 10px calc(28px + env(safe-area-inset-bottom)) !important;
+        width:100%;
+        max-width:100%;
+        min-width:0;
+        overflow-x:hidden;
+    }
+    .admin-dashboard .content-section, .vendor-dashboard .content-section {
+        width:100%;
+        max-width:100%;
+        min-width:0;
+        padding:16px 12px !important;
+        margin-bottom:12px;
+        border-radius:16px;
+        overflow:hidden;
+    }
+    .section-header {
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        flex-wrap:wrap;
+        gap:10px;
+        margin-bottom:14px;
+    }
+    .section-header h2 { font-size:1.25rem !important; line-height:1.4; }
+
+    .stats-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px !important; margin-bottom:16px !important; }
+    .stat-card { min-width:0; padding:15px !important; border-radius:14px; }
+    .stat-card h4 { font-size:.74rem !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .stat-card .value { font-size:1.35rem !important; overflow-wrap:anywhere; }
+
+    .reports-grid { grid-template-columns:1fr !important; gap:10px !important; margin-top:14px !important; }
+    .report-card { min-width:0; padding:14px !important; border-radius:14px; }
+    .report-card .report-icon { width:46px !important; height:46px !important; flex-basis:46px !important; }
+    .report-card strong { font-size:.9rem; }
+
+    .dashboard-scroll-x { margin:0 -12px; width:calc(100% + 24px); padding:0 12px 5px; }
+    .data-table { min-width:650px; font-size:.78rem; }
+    .data-table th, .data-table td { padding:9px 8px !important; }
+
+    .form-row { grid-template-columns:1fr !important; gap:10px !important; }
+    .form-group { margin-bottom:13px !important; }
+    .form-group input, .form-group select, .form-group textarea { font-size:.95rem !important; padding:11px 12px !important; }
+    .duration-buttons { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+
+    /* جميع النوافذ المنبثقة داخل الشاشة، بدون قص أفقي */
+    .modal {
+        position:fixed !important;
+        inset:0 !important;
+        width:100vw !important;
+        height:100dvh !important;
+        padding:10px !important;
+        align-items:flex-start !important;
+        justify-content:center !important;
+        overflow-y:auto !important;
+        overflow-x:hidden !important;
+        z-index:3000 !important;
+    }
+    .modal-content, .modal-content.large {
+        width:100% !important;
+        max-width:100% !important;
+        min-width:0 !important;
+        max-height:calc(100dvh - 20px) !important;
+        margin:0 !important;
+        padding:17px 13px !important;
+        border-radius:17px !important;
+        overflow-x:hidden !important;
+        overflow-y:auto !important;
+    }
+    .modal-header { gap:8px; margin-bottom:14px !important; padding-bottom:11px !important; }
+    .modal-header h3 { font-size:1.05rem; min-width:0; overflow-wrap:anywhere; }
+    .close-modal { width:38px; height:38px; flex:0 0 38px; border-radius:10px; background:#f1f5f9; }
+    .image-upload-area { padding:22px 12px !important; min-height:130px; }
+    .image-upload-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+    .uploaded-image, .vendor-uploaded-image { max-width:100%; }
+
+    .btn-add, .btn, .btn-print { max-width:100%; min-height:44px; }
+    .content-section button { max-width:100%; }
+
+    /* النوافذ التي تحتوي جداول أو بطاقات داخلية */
+    .info-box .info-row, .detail-row { gap:10px; flex-wrap:wrap; }
+    .info-box .info-value, .detail-value { overflow-wrap:anywhere; text-align:left; }
+
+    /* يمنع الـ inline grids الموجودة في التفاصيل من توسيع الهاتف */
+    .content-section [style*="grid-template-columns"] { grid-template-columns:1fr !important; }
+    .content-section [style*="min-width"] { min-width:0 !important; }
+    .content-section [style*="width: 1000px"], .content-section [style*="width:1000px"] { width:100% !important; }
+}
+
+@media (max-width:480px) {
+    .admin-topbar .logo span, .vendor-topbar .logo span { font-size:.82rem; }
+    .admin-topbar .logo i, .vendor-topbar .logo i { display:none; }
+    .stats-grid { grid-template-columns:1fr 1fr !important; }
+    .stat-card { padding:12px !important; }
+    .stat-card .value { font-size:1.15rem !important; }
+    .admin-dashboard .main-content, .vendor-dashboard .main-content { padding-left:8px !important; padding-right:8px !important; }
+    .admin-dashboard .content-section, .vendor-dashboard .content-section { padding:14px 10px !important; }
+    .dashboard-scroll-x { margin-left:-10px; margin-right:-10px; width:calc(100% + 20px); padding-left:10px; padding-right:10px; }
+    .modal { padding:7px !important; }
+    .modal-content, .modal-content.large { max-height:calc(100dvh - 14px) !important; padding:14px 10px !important; border-radius:15px !important; }
+    .report-card { padding:12px !important; }
+}
+
+@media (max-width:360px) {
+    .admin-topbar, .vendor-topbar { padding-left:7px; padding-right:7px; }
+    .dashboard-mobile-menu { width:40px; height:40px; flex-basis:40px; }
+    .admin-topbar .topbar-actions .topbar-btn, .vendor-topbar .topbar-actions .topbar-btn { width:40px; height:40px; }
+    .stats-grid { gap:7px !important; }
+    .stat-card h4 { font-size:.68rem !important; }
+    .stat-card .value { font-size:1rem !important; }
+}

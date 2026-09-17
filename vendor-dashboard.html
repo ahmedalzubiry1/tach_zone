@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم التاجر | تيك زون</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard-responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -458,7 +459,7 @@
                         <i class="fas fa-plus"></i> إضافة منتج
                     </button>
                 </div>
-                <table class="data-table" id="productsTable">
+                <div class="dashboard-scroll-x"><table class="data-table" id="productsTable">
                     <thead>
                         <tr>
                             <th>الصورة</th>
@@ -470,7 +471,7 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
+                </table></div>
             </section>
 
             <!-- قسم الطلبات -->
@@ -478,7 +479,7 @@
                 <div class="section-header">
                     <h2>طلبات العملاء</h2>
                 </div>
-                <table class="data-table" id="ordersTable">
+                <div class="dashboard-scroll-x"><table class="data-table" id="ordersTable">
                     <thead>
                         <tr>
                             <th>رقم الطلب</th>
@@ -491,7 +492,7 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
+                </table></div>
             </section>
 
             <!-- قسم الفاتورة والعمولات -->
@@ -516,7 +517,7 @@
                 </div>
                 
                 <h3 style="margin: 20px 0 15px; color: var(--primary);"><i class="fas fa-history"></i> سجل المعاملات</h3>
-                <table class="data-table" id="transactionsTable">
+                <div class="dashboard-scroll-x"><table class="data-table" id="transactionsTable">
                     <thead>
                         <tr>
                             <th>التاريخ</th>
@@ -526,7 +527,7 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
+                </table></div>
                 
                 <div class="info-box" style="background: var(--bg); padding: 20px; border-radius: 12px; margin-top: 20px; border-right: 4px solid var(--primary);">
                     <h4 style="color: var(--primary); margin-bottom: 10px;"><i class="fas fa-info-circle"></i> معلومات السداد</h4>
@@ -1087,5 +1088,6 @@
             }
         });
     </script>
+    <script src="dashboard-responsive.js"></script>
 </body>
 </html>
