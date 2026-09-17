@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.webmanifest">
+    <title>تيك زون | Tech Zone - حلول رقمية متكاملة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- شاشة التحميل -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo"><i class="fas fa-bolt"></i></div>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+            <p>جاري تحميل المتجر...</p>
+        </div>
+    </div>
+
+    <!-- زر العودة للأعلى -->
+    <button class="scroll-top" id="scrollTop" title="العودة للأعلى">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- شريط التنبيه العلوي -->
+    <div class="top-bar">
+        <div class="container">
+            <span><i class="fas fa-truck-fast"></i> شحن مجاني للطلبات فوق $200 | <i class="fas fa-shield-check"></i> ضمان استرجاع 14 يوم</span>
+            <div class="top-links">
+                <a href="#contact" id="supportLink"><i class="fas fa-headset"></i> الدعم</a>
+                <a href="#" id="accountLink"><i class="fas fa-user"></i> <span id="accountText">حسابي</span></a>
+                <a href="#" id="wishlistBtn"><i class="fas fa-heart"></i> المفضلة (<span id="wishlistCount">0</span>)</a>
+                <a href="admin.html" id="adminLink" style="display: none;"><i class="fas fa-user-shield"></i> لوحة التحكم</a>
+                <a href="#" id="logoutLink" style="display: none;"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- الهيدر -->
+    <header class="header" id="header">
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>تيك زون <small>Store</small></span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#home" class="active">الرئيسية</a>
+                <a href="#categories">التصنيفات</a>
+                <a href="#products">المنتجات</a>
+                <a href="#offers">العروض</a>
+                <a href="#custom-order">طلب مخصص</a>
+                <a href="#contact">تواصل معنا</a>
+            </nav>
+
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="ابحث عن منتج أو خدمة...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <button class="icon-btn" id="themeToggle" title="تبديل الوضع">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="icon-btn" id="wishlistBtnHeader" title="المفضلة">
+                    <i class="fas fa-heart"></i>
+                    <span class="cart-count wishlist-count" id="wishlistCountHeader">0</span>
+                </button>
+                <button class="icon-btn cart-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- واجهة الهاتف: قائمة جانبية على نمط التطبيقات -->
+    <div class="mobile-app-overlay" id="mobileAppOverlay"></div>
+    <aside class="mobile-app-drawer" id="mobileAppDrawer" aria-hidden="true">
+        <div class="mobile-drawer-head">
+            <div class="mobile-drawer-brand">
+                <span class="mobile-drawer-logo"><i class="fas fa-bolt"></i></span>
+                <div><strong>تيك زون</strong><small>Tech Zone Store</small></div>
+            </div>
+            <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="إغلاق القائمة"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="mobile-drawer-account" id="mobileDrawerAccount">
+            <span class="mobile-account-avatar"><i class="fas fa-user"></i></span>
+            <div><strong id="mobileDrawerAccountName">حسابي</strong><small id="mobileDrawerAccountState">تسجيل الدخول أو إنشاء حساب</small></div>
+        </div>
+        <nav class="mobile-drawer-nav">
+            <a href="#home"><i class="fas fa-house"></i><span>الرئيسية</span></a>
+            <a href="#categories"><i class="fas fa-layer-group"></i><span>التصنيفات</span></a>
+            <a href="#products"><i class="fas fa-box-open"></i><span>المنتجات</span></a>
+            <a href="#offers"><i class="fas fa-tags"></i><span>العروض</span></a>
+            <a href="#custom-order"><i class="fas fa-wand-magic-sparkles"></i><span>طلب مخصص</span></a>
+            <a href="#contact"><i class="fas fa-headset"></i><span>تواصل معنا</span></a>
+            <button type="button" id="mobileDrawerAccountBtn"><i class="fas fa-user-circle"></i><span>الحساب</span></button>
+            <button type="button" id="mobileDrawerLogoutBtn" style="display:none"><i class="fas fa-right-from-bracket"></i><span>تسجيل الخروج</span></button>
+            <a href="admin.html" id="mobileDrawerAdminLink" style="display:none"><i class="fas fa-user-shield"></i><span>لوحة التحكم</span></a>
+        </nav>
+    </aside>
+
+    <!-- شريط تنقل سفلي للهاتف -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="التنقل الرئيسي">
+        <a href="#home" class="mobile-bottom-item active"><i class="fas fa-house"></i><span>الرئيسية</span></a>
+        <button type="button" class="mobile-bottom-item" id="mobileBottomCategories"><i class="fas fa-layer-group"></i><span>التصنيفات</span></button>
+        <button type="button" class="mobile-bottom-item mobile-bottom-cart" id="mobileBottomCart"><i class="fas fa-cart-shopping"></i><b id="mobileBottomCartCount">0</b><span>السلة</span></button>
+        <button type="button" class="mobile-bottom-item" id="mobileBottomWishlist"><i class="fas fa-heart"></i><b id="mobileBottomWishlistCount">0</b><span>المفضلة</span></button>
+        <button type="button" class="mobile-bottom-item" id="mobileBottomAccount"><i class="fas fa-user"></i><span>حسابي</span></button>
+    </nav>
+
+    <!-- قسم البطل -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <div class="hero-text">
+                <span class="badge">🔥 حلول رقمية متكاملة</span>
+                <h1>اكتشف عالم <span class="gradient-text">التقنية</span> بين يديك</h1>
+                <p>مواقع إلكترونية، تطبيقات موبايل، أدوات ذكاء اصطناعي، خدمات برمجية، أجهزة إلكترونية ومعدات رياضية - كل ما تحتاجه في مكان واحد</p>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn btn-primary">
+                        <i class="fas fa-shopping-bag"></i> تسوق الآن
+                    </a>
+                    <a href="#custom-order" class="btn btn-outline">
+                        <i class="fas fa-magic"></i> اطلب تصميم مخصص
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div><strong id="statCustomers">0</strong><span>عميل سعيد</span></div>
+                    <div><strong id="statProducts">0</strong><span>منتج متنوع</span></div>
+                    <div><strong>24</strong><span>ساعة دعم</span></div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1">
+                    <i class="fas fa-laptop-code"></i>
+                    <span>مواقع احترافية</span>
+                </div>
+                <div class="floating-card card-2">
+                    <i class="fas fa-mobile-screen-button"></i>
+                    <span>تطبيقات موبايل</span>
+                </div>
+                <div class="floating-card card-3">
+                    <i class="fas fa-robot"></i>
+                    <span>ذكاء اصطناعي</span>
+                </div>
+                <div class="hero-circle"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- التصنيفات -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <div class="section-title">
+                <span class="section-badge">تصفح حسب الفئة</span>
+                <h2>تسوق حسب <span class="gradient-text">التصنيف</span></h2>
+                <p>اختر من بين تشكيلة واسعة من التصنيفات</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card" data-category="websites">
+                    <div class="category-icon"><i class="fas fa-globe"></i></div>
+                    <h3>مواقع إلكترونية</h3>
+                    <p>قوالب جاهزة وأنظمة CMS</p>
+                    <span id="count-websites">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="mobile-apps">
+                    <div class="category-icon"><i class="fas fa-mobile-screen-button"></i></div>
+                    <h3>تطبيقات موبايل</h3>
+                    <p>iOS و Android</p>
+                    <span id="count-mobile-apps">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="ai-tools">
+                    <div class="category-icon"><i class="fas fa-robot"></i></div>
+                    <h3>أدوات ذكاء اصطناعي</h3>
+                    <p>ChatGPT, Midjourney وأكثر</p>
+                    <span id="count-ai-tools">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="tech-services">
+                    <div class="category-icon"><i class="fas fa-code"></i></div>
+                    <h3>خدمات برمجية</h3>
+                    <p>تطوير وصيانة واستضافة</p>
+                    <span id="count-tech-services">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="electronics">
+                    <div class="category-icon"><i class="fas fa-laptop"></i></div>
+                    <h3>إلكترونيات</h3>
+                    <p>هواتف، لابتوبات، سماعات</p>
+                    <span id="count-electronics">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="sports">
+                    <div class="category-icon"><i class="fas fa-dumbbell"></i></div>
+                    <h3>رياضة ولياقة</h3>
+                    <p>معدات وتمارين</p>
+                    <span id="count-sports">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="accessories">
+                    <div class="category-icon"><i class="fas fa-gem"></i></div>
+                    <h3>إكسسوارات</h3>
+                    <p>ساعات، نظارات، حقائب</p>
+                    <span id="count-accessories">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="furniture-office">
+                    <div class="category-icon"><i class="fas fa-chair"></i></div>
+                    <h3>الأثاث والمكتبي</h3>
+                    <p>أثاث وأدوات مكتبية</p>
+                    <span id="count-furniture-office">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="furnishings">
+                    <div class="category-icon"><i class="fas fa-couch"></i></div>
+                    <h3>المفروشات</h3>
+                    <p>مفروشات منزلية</p>
+                    <span id="count-furnishings">0 منتج</span>
+                </div>
+                <div class="category-card" data-category="home-appliances">
+                    <div class="category-icon"><i class="fas fa-blender"></i></div>
+                    <h3>الأدوات المنزلية</h3>
+                    <p>ثلاجة، غسالة، مكيف</p>
+                    <span id="count-home-appliances">0 منتج</span>
+                </div>
+                <div class="category-card custom-order-card" data-category="custom">
+                    <div class="category-icon"><i class="fas fa-magic-wand-sparkles"></i></div>
+                    <h3>تصميم مخصص</h3>
+                    <p>اطلب حسب احتياجك</p>
+                    <span>تواصل معنا</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- المنتجات -->
+    <section class="products-section" id="products">
+        <div class="container">
+            <div class="section-title">
+                <span class="section-badge">منتجاتنا المميزة</span>
+                <h2>أحدث <span class="gradient-text">المنتجات</span></h2>
+                <p>اكتشف أفضل المنتجات المختارة بعناية</p>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="websites">مواقع</button>
+                <button class="filter-btn" data-filter="mobile-apps">تطبيقات</button>
+                <button class="filter-btn" data-filter="ai-tools">ذكاء اصطناعي</button>
+                <button class="filter-btn" data-filter="tech-services">خدمات برمجية</button>
+                <button class="filter-btn" data-filter="electronics">إلكترونيات</button>
+                <button class="filter-btn" data-filter="sports">رياضة</button>
+                <button class="filter-btn" data-filter="accessories">إكسسوارات</button>
+                <button class="filter-btn" data-filter="furniture-office">أثاث ومكتبي</button>
+                <button class="filter-btn" data-filter="furnishings">مفروشات</button>
+                <button class="filter-btn" data-filter="home-appliances">أدوات منزلية</button>
+            </div>
+
+            <!-- ✅ التصنيفات الفرعية (تظهر ديناميكياً) -->
+            <div class="sub-categories" id="subCategoriesContainer" style="display: none;"></div>
+
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <!-- قسم العروض -->
+    <section class="offers-section" id="offers" style="padding: 60px 0;">
+        <div class="container">
+            <div class="section-title">
+                <span class="section-badge"> عروض حصرية</span>
+                <h2>عروض <span class="gradient-text">محدودة</span></h2>
+                <p>اغتنم الفرصة واحصل على أفضل الخصومات</p>
+            </div>
+            <div class="products-grid" id="offersGrid"></div>
+        </div>
+    </section>
+
+    <!-- كيف نعمل -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <span class="section-badge">خطوات بسيطة</span>
+                <h2>كيف <span class="gradient-text">نعمل</span>؟</h2>
+                <p>4 خطوات بسيطة للحصول على ما تريد</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon"><i class="fas fa-search"></i></div>
+                    <h3>اختر المنتج</h3>
+                    <p>تصفح منتجاتنا واختر ما يناسب احتياجاتك</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon"><i class="fas fa-cart-shopping"></i></div>
+                    <h3>أضف للسلة</h3>
+                    <p>أضف المنتجات إلى سلة التسوق</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon"><i class="fas fa-credit-card"></i></div>
+                    <h3>ادفع بأمان</h3>
+                    <p>ادفع عبر طرق دفع آمنة ومتعددة</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <div class="step-icon"><i class="fas fa-rocket"></i></div>
+                    <h3>استلم فوراً</h3>
+                    <p>المنتجات الرقمية تصل فوراً</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- طلب تصميم مخصص -->
+    <section class="custom-order" id="custom-order">
+        <div class="container">
+            <div class="custom-order-wrapper">
+                <div class="custom-order-info">
+                    <span class="section-badge">خدمة مميزة</span>
+                    <h2>اطلب <span class="gradient-text">تصميم مخصص</span> حسب احتياجك</h2>
+                    <p>هل لديك فكرة مشروع؟ نوفر لك فريقاً احترافياً لتحويل أفكارك إلى واقع رقمي</p>
+                    <ul class="custom-features">
+                        <li><i class="fas fa-check-circle"></i> تصميم مواقع إلكترونية احترافية</li>
+                        <li><i class="fas fa-check-circle"></i> تطبيقات موبايل iOS & Android</li>
+                        <li><i class="fas fa-check-circle"></i> حلول ذكاء اصطناعي مخصصة</li>
+                        <li><i class="fas fa-check-circle"></i> أنظمة إدارة ومتاجر إلكترونية</li>
+                        <li><i class="fas fa-check-circle"></i> تصاميم UI/UX حصرية</li>
+                        <li><i class="fas fa-check-circle"></i> دعم فني وصيانة مستمرة</li>
+                    </ul>
+                    <div class="custom-stats">
+                        <div><strong id="statProjects">0</strong><span>مشروع منجز</span></div>
+                        <div><strong>100%</strong><span>رضا العملاء</span></div>
+                        <div><strong>24/7</strong><span>دعم متواصل</span></div>
+                    </div>
+                </div>
+                <form class="custom-order-form" id="customOrderForm">
+                    <h3><i class="fas fa-paper-plane"></i> أرسل طلبك الآن</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الاسم الكامل *</label>
+                            <input type="text" name="name" required placeholder="أدخل اسمك">
+                        </div>
+                        <div class="form-group">
+                            <label>البريد الإلكتروني *</label>
+                            <input type="email" name="email" required placeholder="example@mail.com">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>رقم الهاتف</label>
+                            <input type="tel" name="phone" placeholder="+967 7XX XXX XXX">
+                        </div>
+                        <div class="form-group">
+                            <label>نوع المشروع *</label>
+                            <select name="projectType" required>
+                                <option value="">اختر النوع</option>
+                                <option value="website">موقع إلكتروني</option>
+                                <option value="mobile-app">تطبيق موبايل</option>
+                                <option value="ai-solution">حل ذكاء اصطناعي</option>
+                                <option value="ecommerce">متجر إلكتروني</option>
+                                <option value="ui-ux">تصميم UI/UX</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الميزانية المتوقعة</label>
+                        <select name="budget">
+                            <option value="">اختر النطاق</option>
+                            <option value="1000-5000">$1,000 - $5,000</option>
+                            <option value="5000-15000">$5,000 - $15,000</option>
+                            <option value="15000-50000">$15,000 - $50,000</option>
+                            <option value="50000+">أكثر من $50,000</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>وصف المشروع *</label>
+                        <textarea name="description" rows="4" required placeholder="اشرح فكرتك ومتطلباتك بالتفصيل..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        <i class="fas fa-paper-plane"></i> إرسال الطلب
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- المميزات -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-truck-fast"></i></div>
+                    <h3>توصيل سريع</h3>
+                    <p>خلال 24 ساعة</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+                    <h3>دفع آمن</h3>
+                    <p>حماية كاملة</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-rotate-left"></i></div>
+                    <h3>استرجاع مجاني</h3>
+                    <p>خلال 14 يوم</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                    <h3>دعم 24/7</h3>
+                    <p>فريق متواصل</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الأسئلة الشائعة -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-title">
+                <span class="section-badge">الأسئلة الشائعة</span>
+                <h2>إجابات على <span class="gradient-text">أسئلتك</span></h2>
+                <p>كل ما تحتاج معرفته عن خدماتنا</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>كيف يمكنني طلب تصميم مخصص؟</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يمكنك ملء نموذج "طلب تصميم مخصص" في موقعنا، وسيتواصل معك فريقنا خلال 24 ساعة.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>ما هي طرق الدفع المتاحة؟</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نقبل جميع البطاقات الائتمانية، Apple Pay، تحويل بنكي، والدفع عند الاستلام.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>كم يستغرق تسليم المشاريع المخصصة؟</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يعتمد على حجم المشروع: المواقع البسيطة 1-2 أسبوع، التطبيقات 4-8 أسابيع.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>هل تقدمون دعم فني بعد التسليم؟</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، نوفر دعماً فنياً مجانياً لمدة 3 أشهر بعد تسليم أي مشروع.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <i class="fas fa-bolt"></i>
+                        <span>تيك زون <small>Store</small></span>
+                    </div>
+                    <p>وجهتك الأولى للتسوق الإلكتروني والحلول الرقمية المتكاملة.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/1ECwV4Erux/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/a.__az0/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/967776730573" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:ahmedalzubiry8@gmail.com"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#products">المنتجات</a></li>
+                        <li><a href="#offers">العروض</a></li>
+                        <li><a href="#custom-order">طلب مخصص</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>خدماتنا</h4>
+                    <ul>
+                        <li><a href="#">تصميم مواقع</a></li>
+                        <li><a href="#">تطبيقات موبايل</a></li>
+                        <li><a href="#">حلول ذكاء اصطناعي</a></li>
+                        <li><a href="#">استضافة وصيانة</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>تواصل معنا</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-location-dot"></i> صنعاء، الجمهورية اليمنية</li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:ahmedalzubiry8@gmail.com">ahmedalzubiry8@gmail.com</a></li>
+                        <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/967776730573" target="_blank">+967776730573</a></li>
+                        <li><i class="fas fa-clock"></i> 24/7 دعم متواصل</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 تيك زون Store. جميع الحقوق محفوظة.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- سلة التسوق -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> سلة التسوق</h3>
+            <button class="close-cart" id="closeCart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter">
+            <div class="cart-total">
+                <span>الإجمالي:</span>
+                <strong id="cartTotal">$0.00</strong>
+            </div>
+            <button class="btn btn-primary checkout-btn" id="checkoutBtn">
+                <i class="fas fa-credit-card"></i> إتمام الشراء
+            </button>
+        </div>
+    </aside>
+
+    <!-- نافذة المفضلة -->
+    <aside class="wishlist-sidebar" id="wishlistSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-heart"></i> المفضلة</h3>
+            <button class="close-cart" id="closeWishlist"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="wishlistItems"></div>
+    </aside>
+
+    <!-- نافذة تسجيل الدخول / إنشاء حساب -->
+    <div class="modal-overlay" id="authModal">
+        <div class="auth-modal">
+            <button class="close-modal" id="closeAuthModal">&times;</button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">تسجيل الدخول</button>
+                <button class="auth-tab" data-tab="register">إنشاء حساب جديد</button>
+            </div>
+            
+            <form class="auth-form active" id="loginForm">
+                <h3>🔐 تسجيل الدخول</h3>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="loginEmail" required placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="loginPassword" required placeholder="********">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> دخول
+                </button>
+            </form>
+            
+            <form class="auth-form" id="registerForm">
+                <h3>👤 إنشاء حساب جديد</h3>
+                
+                <div class="form-group">
+                    <label>نوع الحساب *</label>
+                    <select id="registerUserType" required onchange="toggleVendorFields()">
+                        <option value="customer">🛍️ عميل (مشتري)</option>
+                        <option value="vendor">🏪 صاحب منتج (تاجر)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>الاسم الكامل *</label>
+                    <input type="text" id="registerName" required placeholder="أحمد محمد">
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني *</label>
+                    <input type="email" id="registerEmail" required placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف *</label>
+                    <input type="tel" id="registerPhone" required placeholder="+967 7XX XXX XXX">
+                </div>
+                
+                <!-- حقول التاجر (تظهر فقط عند اختيار تاجر) -->
+                <div id="vendorFields" style="display: none;">
+                    <div class="form-group">
+                        <label>اسم المتجر / المحل *</label>
+                        <input type="text" id="vendorStoreName" placeholder="مثال: متجر الأناقة">
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان المحل</label>
+                        <input type="text" id="vendorAddress" placeholder="صنعاء - شارع...">
+                    </div>
+                    <div style="background: rgba(99,102,241,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px; border-right: 4px solid var(--primary);">
+                        <h4 style="color: var(--primary); margin-bottom: 8px; font-size: 0.95rem;">
+                            <i class="fas fa-info-circle"></i> معلومات مهمة للتاجر
+                        </h4>
+                        <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.7; margin: 0;">
+                            • نسبة العمولة: <strong>3%</strong> من كل عملية بيع<br>
+                            • حد الفاتورة: <strong>$100</strong> - عند الوصول إليه يتم تقييد الحساب حتى السداد<br>
+                            • يمكنك إضافة منتجات وإدارة طلباتك من لوحة التحكم
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>كلمة المرور *</label>
+                    <input type="password" id="registerPassword" required placeholder="********" minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- إشعار -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تمت الإضافة</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

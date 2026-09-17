@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي | تيك زون</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profile-page { background: var(--bg-alt); min-height: 100vh; padding: 40px 0; }
+        .profile-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .profile-header { background: var(--gradient); color: white; padding: 40px; border-radius: 20px; margin-bottom: 30px; display: flex; align-items: center; gap: 30px; flex-wrap: wrap; }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 900; }
+        .profile-info { flex: 1; }
+        .profile-info h1 { font-size: 2rem; margin-bottom: 10px; }
+        .profile-info p { opacity: 0.9; margin-bottom: 5px; }
+        .profile-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .profile-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .profile-menu-item { background: var(--bg); padding: 30px; border-radius: 16px; cursor: pointer; transition: var(--transition); border: 2px solid var(--border); text-align: center; }
+        .profile-menu-item:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow-lg); }
+        .profile-menu-item i { font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; }
+        .profile-menu-item h3 { margin-bottom: 10px; }
+        .profile-menu-item p { color: var(--text-light); font-size: 0.9rem; }
+        .profile-section { background: var(--bg); padding: 30px; border-radius: 16px; margin-bottom: 20px; }
+        .profile-section h2 { margin-bottom: 20px; color: var(--primary); }
+        .order-card { background: var(--bg-alt); padding: 20px; border-radius: 12px; margin-bottom: 15px; border-right: 4px solid var(--primary); }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .order-status { padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-confirmed { background: #d1fae5; color: #065f46; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        .status-completed { background: #dbeafe; color: #1e40af; }
+        .logout-btn { background: var(--secondary); color: white; padding: 12px 30px; border: none; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 1rem; }
+        .back-btn { display: inline-flex; align-items: center; gap: 10px; color: var(--primary); margin-bottom: 20px; font-weight: 600; text-decoration: none; }
+        .admin-btn { background: var(--primary); color: white; padding: 12px 30px; border: none; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body class="profile-page">
+
+    <div class="profile-container">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
+        
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">?</div>
+            <div class="profile-info">
+                <h1 id="profileName">جاري التحميل...</h1>
+                <p><i class="fas fa-envelope"></i> <span id="profileEmail">-</span></p>
+                <p><i class="fas fa-phone"></i> <span id="profilePhone">-</span></p>
+            </div>
+            <div class="profile-actions">
+                <a href="admin.html" class="admin-btn" id="adminBtn" style="display: none;">
+                    <i class="fas fa-user-shield"></i> لوحة التحكم
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                </button>
+            </div>
+        </div>
+
+        <div class="profile-menu">
+            <div class="profile-menu-item" onclick="showSection('orders')">
+                <i class="fas fa-shopping-bag"></i>
+                <h3>طلباتي</h3>
+                <p>عرض جميع طلباتك وحالتها</p>
+            </div>
+            <div class="profile-menu-item" onclick="showSection('custom')">
+                <i class="fas fa-magic"></i>
+                <h3>طلبات التصميم</h3>
+                <p>متابعة طلبات التصميم المخصصة</p>
+            </div>
+            <div class="profile-menu-item" onclick="showSection('wishlist')">
+                <i class="fas fa-heart"></i>
+                <h3>المفضلة</h3>
+                <p>المنتجات المفضلة لديك</p>
+            </div>
+            <div class="profile-menu-item" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                <h3>الإعدادات</h3>
+                <p>تعديل بيانات الحساب</p>
+            </div>
+        </div>
+
+        <!-- قسم الطلبات -->
+        <div class="profile-section" id="ordersSection" style="display: none;">
+            <h2><i class="fas fa-shopping-bag"></i> طلباتي</h2>
+            <div id="ordersList"></div>
+        </div>
+
+        <!-- قسم طلبات التصميم -->
+        <div class="profile-section" id="customSection" style="display: none;">
+            <h2><i class="fas fa-magic"></i> طلبات التصميم المخصصة</h2>
+            <div id="customList"></div>
+        </div>
+
+        <!-- قسم المفضلة -->
+        <div class="profile-section" id="wishlistSection" style="display: none;">
+            <h2><i class="fas fa-heart"></i> المفضلة</h2>
+            <div id="wishlistList"></div>
+        </div>
+
+        <!-- قسم الإعدادات -->
+        <div class="profile-section" id="settingsSection" style="display: none;">
+            <h2><i class="fas fa-cog"></i> الإعدادات</h2>
+            <form id="settingsForm">
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>الاسم الكامل</label>
+                        <input type="text" id="settingsName" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" id="settingsPhone" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px;">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 15px;">
+                    <i class="fas fa-save"></i> حفظ التغييرات
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script>
+        let currentUser = null;
+
+        async function initProfile() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            
+            if (!user || user.is_anonymous) {
+                alert('يجب إنشاء حساب دائم أولاً');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            currentUser = user;
+            document.getElementById('profileName').textContent = user.user_metadata?.full_name || user.email;
+            document.getElementById('profileEmail').textContent = user.email;
+            document.getElementById('profilePhone').textContent = user.user_metadata?.phone || '-';
+            document.getElementById('profileAvatar').textContent = (user.user_metadata?.full_name || user.email).charAt(0).toUpperCase();
+            
+            document.getElementById('settingsName').value = user.user_metadata?.full_name || '';
+            document.getElementById('settingsPhone').value = user.user_metadata?.phone || '';
+            
+            // إظهار زر الأدمن إذا كان أدمن
+            if (localStorage.getItem('isAdmin') === 'true') {
+                document.getElementById('adminBtn').style.display = 'inline-flex';
+            }
+            
+            loadOrders();
+            loadCustomRequests();
+            loadWishlist();
+        }
+
+        async function loadOrders() {
+            const { data: orders } = await supabaseClient
+                .from('orders')
+                .select('*')
+                .eq('customer_email', currentUser.email)
+                .order('created_at', { ascending: false });
+            
+            const list = document.getElementById('ordersList');
+            if (!orders || orders.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 40px;">لا توجد طلبات بعد</p>';
+                return;
+            }
+            
+            const statusText = {
+                'pending': 'قيد المراجعة',
+                'confirmed': 'تم التأكيد',
+                'completed': 'مكتمل',
+                'cancelled': 'ملغي'
+            };
+            
+            list.innerHTML = orders.map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <strong>طلب #${order.id.substring(0, 8)}</strong>
+                        <span class="order-status status-${order.status}">${statusText[order.status]}</span>
+                    </div>
+                    <p><i class="fas fa-calendar"></i> ${new Date(order.created_at).toLocaleDateString('ar-YE')}</p>
+                    <p><i class="fas fa-dollar-sign"></i> المجموع: $${parseFloat(order.total_amount).toFixed(2)}</p>
+                    <p><i class="fas fa-box"></i> عدد المنتجات: ${order.items_count}</p>
+                    ${order.payment_method ? `<p><i class="fas fa-credit-card"></i> طريقة الدفع: ${order.payment_method}</p>` : ''}
+                </div>
+            `).join('');
+        }
+
+        async function loadCustomRequests() {
+            const { data: requests } = await supabaseClient
+                .from('custom_requests')
+                .select('*')
+                .eq('customer_email', currentUser.email)
+                .order('created_at', { ascending: false });
+            
+            const list = document.getElementById('customList');
+            if (!requests || requests.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 40px;">لا توجد طلبات تصميم بعد</p>';
+                return;
+            }
+            
+            const statusText = {
+                'pending': 'قيد المراجعة',
+                'confirmed': 'تم التأكيد',
+                'completed': 'مكتمل',
+                'cancelled': 'ملغي'
+            };
+            
+            list.innerHTML = requests.map(req => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <strong>طلب تصميم #${req.id.substring(0, 8)}</strong>
+                        <span class="order-status status-${req.status}">${statusText[req.status]}</span>
+                    </div>
+                    <p><i class="fas fa-project-diagram"></i> النوع: ${req.project_type}</p>
+                    <p><i class="fas fa-calendar"></i> ${new Date(req.created_at).toLocaleDateString('ar-YE')}</p>
+                    ${req.budget ? `<p><i class="fas fa-dollar-sign"></i> الميزانية: ${req.budget}</p>` : ''}
+                    <p><i class="fas fa-comment"></i> ${req.description.substring(0, 100)}...</p>
+                </div>
+            `).join('');
+        }
+
+        function loadWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const list = document.getElementById('wishlistList');
+            
+            if (wishlist.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 40px;">المفضلة فارغة</p>';
+                return;
+            }
+            
+            list.innerHTML = wishlist.map(item => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <strong><i class="fas ${item.icon}"></i> ${item.name}</strong>
+                        <span style="color: var(--primary); font-weight: 700;">$${parseFloat(item.price).toFixed(2)}</span>
+                    </div>
+                    <p>${item.description}</p>
+                </div>
+            `).join('');
+        }
+
+        function showSection(section) {
+            ['orders', 'custom', 'wishlist', 'settings'].forEach(s => {
+                document.getElementById(s + 'Section').style.display = 'none';
+            });
+            document.getElementById(section + 'Section').style.display = 'block';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                await supabaseClient.auth.signOut();
+                localStorage.removeItem('isAdmin');
+                alert('تم تسجيل الخروج بنجاح');
+                window.location.href = 'index.html';
+            }
+        });
+
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('settingsName').value;
+            const phone = document.getElementById('settingsPhone').value;
+            
+            const { error } = await supabaseClient.auth.updateUser({
+                data: { full_name: name, phone: phone }
+            });
+            
+            if (error) {
+                alert('حدث خطأ: ' + error.message);
+            } else {
+                alert('✅ تم حفظ التغييرات بنجاح');
+                initProfile();
+            }
+        });
+
+        initProfile();
+    </script>
+</body>
+</html>

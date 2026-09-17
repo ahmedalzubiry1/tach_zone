@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المنتج | تيك زون</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .details-page { background: var(--bg-alt); min-height: 100vh; }
+        .product-details-container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .product-details-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .product-gallery { position: sticky; top: 100px; height: fit-content; }
+        .main-image-container {
+            background: var(--bg);
+            border-radius: 20px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .main-image-container i { font-size: 12rem; color: var(--primary); }
+        .main-image-container img { width: 100%; height: 100%; object-fit: contain; }
+        .thumbnail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .thumbnail {
+            background: var(--bg);
+            border-radius: 12px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            overflow: hidden;
+        }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        .thumbnail:hover, .thumbnail.active { border-color: var(--primary); }
+        .product-info-section h1 { font-size: 2.2rem; margin-bottom: 15px; }
+        .product-meta-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .rating-display { display: flex; align-items: center; gap: 10px; }
+        .stars { color: #fbbf24; font-size: 1.2rem; }
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 25px;
+            background: var(--bg-alt);
+            border-radius: 16px;
+            flex-wrap: wrap;
+        }
+        .current-price { font-size: 2.5rem; font-weight: 900; color: var(--primary); }
+        .old-price { font-size: 1.3rem; text-decoration: line-through; color: var(--text-light); }
+        .discount-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+        .action-buttons { display: flex; gap: 10px; margin: 25px 0; flex-wrap: wrap; }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .quantity-control button {
+            width: 45px;
+            height: 50px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+        .quantity-control button:hover { background: var(--primary); color: white; }
+        .quantity-control span {
+            width: 60px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .tabs-section {
+            background: var(--bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: var(--shadow);
+        }
+        .tabs-header {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .tab-button {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .tab-button.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .product-features-list { list-style: none; padding: 0; }
+        .product-features-list li {
+            padding: 10px 0;
+            padding-right: 30px;
+            position: relative;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border);
+        }
+        .product-features-list li:last-child { border-bottom: none; }
+        .product-features-list li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--accent);
+            font-weight: 900;
+        }
+        .specs-table { width: 100%; border-collapse: collapse; }
+        .specs-table tr { border-bottom: 1px solid var(--border); }
+        .specs-table td { padding: 12px 15px; }
+        .specs-table td:first-child { font-weight: 700; width: 30%; }
+        .specs-table td:last-child { color: var(--text-light); }
+        
+        /* ✅ قسم التقييمات */
+        .review-form {
+            background: var(--bg-alt);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+        .review-form h3 { margin-bottom: 15px; color: var(--primary); }
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            direction: ltr;
+        }
+        .star-rating i {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .star-rating i:hover,
+        .star-rating i.active { color: #fbbf24; }
+        .review-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+        }
+        .review-item {
+            background: var(--bg-alt);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+        .loading-spinner {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .loading-spinner i {
+            font-size: 3rem;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @media (max-width: 992px) {
+            .product-details-wrapper { grid-template-columns: 1fr; }
+            .product-gallery { position: static; }
+            .main-image-container { height: 400px; }
+            .main-image-container i { font-size: 8rem; }
+        }
+    </style>
+</head>
+<body class="details-page">
+
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>تيك زون <small>Store</small></span>
+            </a>
+            <nav class="nav-menu">
+                <a href="index.html">الرئيسية</a>
+                <a href="index.html#products">المنتجات</a>
+                <a href="index.html#offers">العروض</a>
+                <a href="index.html#custom-order">طلب مخصص</a>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn cart-btn" onclick="window.location.href='index.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+            <i class="fas fa-chevron-left"></i>
+            <a href="index.html#products">المنتجات</a>
+            <i class="fas fa-chevron-left"></i>
+            <span id="breadcrumbCategory">التصنيف</span>
+            <i class="fas fa-chevron-left"></i>
+            <span id="breadcrumbProduct" class="active">المنتج</span>
+        </div>
+    </div>
+
+    <div class="loading-spinner" id="loadingSpinner">
+        <i class="fas fa-spinner"></i>
+        <h3>جاري تحميل المنتج...</h3>
+    </div>
+
+    <div class="product-details-container" id="productDetailsContainer" style="display: none;">
+        <div class="product-details-wrapper">
+            <div class="product-gallery">
+                <div class="main-image-container" id="mainImage">
+                    <span class="product-badge" id="productBadge" style="display: none;">جديد</span>
+                    <i class="fas fa-box" id="mainIcon"></i>
+                </div>
+                <div class="thumbnail-grid" id="thumbnailList"></div>
+                <div class="action-buttons" style="margin-top: 15px;">
+                    <button class="btn btn-outline" id="wishlistToggle" style="flex: 1;">
+                        <i class="far fa-heart"></i> المفضلة
+                    </button>
+                    <button class="btn btn-outline" style="flex: 1;" onclick="shareProduct()">
+                        <i class="fas fa-share-nodes"></i> مشاركة
+                    </button>
+                </div>
+            </div>
+
+            <div class="product-info-section">
+                <div class="product-category" id="productCategory">-</div>
+                <h1 id="productName">اسم المنتج</h1>
+                
+                <div class="product-meta-info">
+                    <div class="rating-display">
+                        <span class="stars" id="productStars">★★★★★</span>
+                        <span class="rating-text" id="productRating">0</span>
+                        <span class="reviews-count">(<span id="productReviews">0</span> تقييم)</span>
+                    </div>
+                    <div class="stock-status in-stock">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="stockStatus">متوفر</span>
+                    </div>
+                </div>
+
+                <p class="product-description" id="productDescription">-</p>
+
+                <div class="price-section">
+                    <div class="current-price" id="productPrice">$0.00</div>
+                    <div class="old-price" id="productOldPrice" style="display: none;">$0.00</div>
+                    <div class="discount-badge" id="discountBadge" style="display: none;">-0%</div>
+                </div>
+
+                <div class="action-buttons">
+                    <div class="quantity-control">
+                        <button onclick="changeDetailQty(-1)">-</button>
+                        <span id="detailQty">1</span>
+                        <button onclick="changeDetailQty(1)">+</button>
+                    </div>
+                    <button class="btn btn-primary" id="addToCartBtn" style="flex: 1;">
+                        <i class="fas fa-cart-plus"></i> أضف للسلة
+                    </button>
+                </div>
+                <button class="btn btn-buy-now" id="buyNowBtn" style="width: 100%; margin-top: 10px; background: var(--text); color: var(--bg);">
+                    <i class="fas fa-bolt"></i> اشترِ الآن
+                </button>
+
+                <div class="product-features" style="margin-top: 25px; padding: 20px; background: var(--bg); border-radius: 16px; border: 1px solid var(--border);">
+                    <h4 style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: var(--primary);">
+                        <i class="fas fa-star"></i> مميزات المنتج
+                    </h4>
+                    <ul class="product-features-list" id="productFeaturesList"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs-section">
+            <div class="tabs-header">
+                <button class="tab-button active" data-tab="description">الوصف</button>
+                <button class="tab-button" data-tab="specifications">المواصفات</button>
+                <button class="tab-button" data-tab="reviews">التقييمات</button>
+                <button class="tab-button" data-tab="shipping">الشحن والضمان</button>
+            </div>
+
+            <div class="tab-content active" id="tab-description">
+                <h3>وصف تفصيلي للمنتج</h3>
+                <div id="fullDescription"></div>
+            </div>
+
+            <div class="tab-content" id="tab-specifications">
+                <h3>المواصفات التقنية</h3>
+                <table class="specs-table" id="specsTable"></table>
+            </div>
+
+            <!-- ✅ قسم التقييمات المحسّن -->
+            <div class="tab-content" id="tab-reviews">
+                <h3>تقييمات العملاء</h3>
+                
+                <!-- نموذج إضافة تقييم -->
+                <div class="review-form" id="reviewFormContainer">
+                    <h3><i class="fas fa-star"></i> أضف تقييمك</h3>
+                    <div class="star-rating" id="starRating">
+                        <i class="far fa-star" data-rating="1"></i>
+                        <i class="far fa-star" data-rating="2"></i>
+                        <i class="far fa-star" data-rating="3"></i>
+                        <i class="far fa-star" data-rating="4"></i>
+                        <i class="far fa-star" data-rating="5"></i>
+                    </div>
+                    <textarea id="reviewComment" placeholder="اكتب رأيك في المنتج..."></textarea>
+                    <button class="btn btn-primary" style="margin-top: 15px;" onclick="submitReview()">
+                        <i class="fas fa-paper-plane"></i> إرسال التقييم
+                    </button>
+                </div>
+                
+                <!-- قائمة التقييمات -->
+                <div id="reviewsList"></div>
+            </div>
+
+            <div class="tab-content" id="tab-shipping">
+                <h3>معلومات الشحن والضمان</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div style="padding: 25px; background: var(--bg-alt); border-radius: 16px; text-align: center;">
+                        <i class="fas fa-truck" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                        <h4>الشحن</h4>
+                        <p>شحن مجاني للطلبات فوق $200 داخل اليمن</p>
+                    </div>
+                    <div style="padding: 25px; background: var(--bg-alt); border-radius: 16px; text-align: center;">
+                        <i class="fas fa-shield-halved" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                        <h4>الضمان</h4>
+                        <p>ضمان شامل لمدة سنتين ضد عيوب الصناعة</p>
+                    </div>
+                    <div style="padding: 25px; background: var(--bg-alt); border-radius: 16px; text-align: center;">
+                        <i class="fas fa-rotate-left" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                        <h4>الاسترجاع</h4>
+                        <p>إمكانية الاسترجاع خلال 14 يوم</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="related-products" style="margin-top: 50px;">
+            <div class="section-title">
+                <h2>منتجات <span class="gradient-text">مشابهة</span></h2>
+                <p>قد تعجبك هذه المنتجات أيضاً</p>
+            </div>
+            <div class="products-grid" id="relatedGrid"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 تيك زون Store. جميع الحقوق محفوظة.</p>
+                <a href="index.html">العودة للرئيسية</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="details.js"></script>
+</body>
+</html>
